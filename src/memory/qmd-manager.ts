@@ -1416,7 +1416,11 @@ export class QmdMemoryManager implements MemorySearchManager {
       if (cutoff && entry.mtimeMs < cutoff) {
         continue;
       }
-      const targetName = `${path.basename(sessionFile, ".jsonl")}.md`;
+      // Strip .jsonl (or .jsonl.reset.<ts> → keep reset suffix for uniqueness)
+      const baseName = path.basename(sessionFile);
+      const targetName = baseName.replace(/\.jsonl(\.reset\.(.+))?$/, (_, resetPart, ts) =>
+        ts ? `.reset.${ts}.md` : ".md",
+      );
       const target = path.join(exportDir, targetName);
       tracked.add(sessionFile);
       const state = this.exportedSessionState.get(sessionFile);
