@@ -1,0 +1,23 @@
+{
+  "$schema": "../src/config/openclaw.schema.json",
+  "$comment": "Default config for MYN/Kaia provisioning. Applied during auto-provisioning to ~/.openclaw/openclaw.json. Users can override any value after setup.",
+  "memory": {
+    "backend": "qmd"
+  },
+  "agents": {
+    "defaults": {
+      "compaction": {
+        "mode": "safeguard",
+        "memoryFlush": {
+          "enabled": true,
+          "softThresholdTokens": 4000
+        }
+      },
+      "contextPruning": {
+        "mode": "cache-ttl",
+        "ttl": "4h",
+        "keepLastAssistants": 3
+      }
+    }
+  }
+}

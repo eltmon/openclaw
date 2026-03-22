@@ -1,0 +1,47 @@
+{
+  "$comment": "MYN Managed OpenClaw base config. Applied on first boot. Users can customize after provisioning.",
+  "memory": {
+    "backend": "qmd"
+  },
+  "gateway": {
+    "mode": "local",
+    "bind": "lan",
+    "port": 3000,
+    "auth": {
+      "type": "password"
+    }
+  },
+  "agents": {
+    "defaults": {
+      "model": "nvidia-nim/meta/llama-3.1-nemotron-70b-instruct",
+      "compaction": {
+        "mode": "safeguard",
+        "memoryFlush": {
+          "enabled": true,
+          "softThresholdTokens": 4000
+        }
+      },
+      "contextPruning": {
+        "mode": "cache-ttl",
+        "ttl": "4h",
+        "keepLastAssistants": 3
+      },
+      "tools": {
+        "disabled": [
+          "bash",
+          "computer",
+          "web_search_brave",
+          "web_search_serpapi",
+          "filesystem_write",
+          "filesystem_delete",
+          "filesystem_move",
+          "exec"
+        ],
+        "filesystem": {
+          "allowedPaths": ["/data/agent-workspace"],
+          "writePolicy": "allowlist"
+        }
+      }
+    }
+  }
+}
