@@ -1,0 +1,46 @@
+# Fork-only fly.io config for the eltmon personal OpenClaw instance.
+# Intentional dogfood of the Project Rosie (MIN-794) managed-instance shape:
+# single hard-coded app ("openclaw-eltmon") that mirrors what Rosie will
+# eventually template per MYN customer.
+#
+# Deploy: fly deploy -c fly.eltmon.toml
+# Keep upstream fly.toml untouched so rebases stay clean.
+
+app = "openclaw-eltmon"
+primary_region = "iad"
+
+[build]
+dockerfile = "Dockerfile"
+
+[env]
+NODE_ENV = "production"
+OPENCLAW_PREFER_PNPM = "1"
+OPENCLAW_STATE_DIR = "/data"
+NODE_OPTIONS = "--max-old-space-size=1536"
+
+[processes]
+app = "node dist/index.js gateway --allow-unconfigured --port 3000 --bind lan"
+
+[http_service]
+internal_port = 3000
+force_https = true
+auto_stop_machines = false
+auto_start_machines = true
+min_machines_running = 1
+processes = ["app"]
+
+[[http_service.checks]]
+grace_period = "30s"
+interval = "30s"
+method = "GET"
+path = "/healthz"
+protocol = "http"
+timeout = "5s"
+
+[[vm]]
+size = "shared-cpu-2x"
+memory = "2048mb"
+
+[mounts]
+source = "openclaw_eltmon_data"
+destination = "/data"
