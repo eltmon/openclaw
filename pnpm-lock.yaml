@@ -734,6 +734,12 @@ importers:
         specifier: workspace:*
         version: link:../../packages/plugin-sdk
 
+  extensions/gmail-readonly:
+    devDependencies:
+      openclaw:
+        specifier: workspace:*
+        version: link:../..
+
   extensions/google:
     dependencies:
       '@google/genai':

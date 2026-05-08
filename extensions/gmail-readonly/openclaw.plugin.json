@@ -1,0 +1,9 @@
+{
+  "id": "gmail-readonly",
+  "providers": ["gmail-readonly"],
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {}
+  }
+}
